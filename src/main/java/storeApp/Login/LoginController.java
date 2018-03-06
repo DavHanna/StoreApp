@@ -24,16 +24,12 @@ public class LoginController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public int login(@RequestParam("username") String username, @RequestParam("password") String password)
+	public String login(@RequestParam("username") String username, @RequestParam("password") String password)
 	{
 		User user = userRepo.findByUsername(username);
-		if (user == null)
-			return -1;
+		if (user == null || user.password != password)
+			return "wrongCredentials";
 		
-		if (user.password != password)
-			return 0;
-		
-		return 1;
-		// Redirect user to the home page
+		return "addProduct";
 	}
 }
