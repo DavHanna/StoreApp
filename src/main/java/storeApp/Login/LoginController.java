@@ -1,6 +1,7 @@
 package storeApp.Login;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import storeApp.User.User;
 import storeApp.User.UserRepository;
 
-@RestController
+@Controller
 @RequestMapping("/login")
 public class LoginController {
 	
@@ -17,9 +18,9 @@ public class LoginController {
 	UserRepository userRepo;
 
 	@RequestMapping(method=RequestMethod.GET)
-	public void index() 
+	public String index() 
 	{
-		// Render the login view
+		return "login";
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)

@@ -11,13 +11,13 @@ import storeApp.User.User;
 import storeApp.User.UserRepository;
 
 @Controller
-//@RequestMapping("/register")
+@RequestMapping("/register")
 public class RegisterController {
 	
 	@Autowired
 	UserRepository userRepo;
 
-	@RequestMapping( value = "/register", method=RequestMethod.GET )
+	@RequestMapping(method=RequestMethod.GET )
 	public String index() 
 	{
 		return "register";
@@ -31,6 +31,6 @@ public class RegisterController {
 		User user = new User(username, password, type);
 		userRepo.save(user);
 		// Redirect user to the home page
-		return "HI";
+		return "redirect:/login";
 	}
 }
