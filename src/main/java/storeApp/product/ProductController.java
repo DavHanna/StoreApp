@@ -1,6 +1,7 @@
 package storeApp.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import storeApp.User.User;
 import storeApp.User.UserRepository;
 
-@RestController
+@Controller
 @RequestMapping("/products")
 public class ProductController {
 	
@@ -19,15 +20,14 @@ public class ProductController {
 	@RequestMapping(method=RequestMethod.GET)
 	public String index() 
 	{
-		return "product index";
+		return "productIndex";
 		// Render the products list
 	}
 	
 	@RequestMapping(value="/add", method=RequestMethod.GET)
 	public String product() 
 	{
-		return "add product view";
-		// Render the add product form (view)
+		return "addProduct";
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
