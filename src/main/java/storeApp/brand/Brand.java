@@ -4,6 +4,8 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -13,15 +15,15 @@ import storeApp.product.Product;
 public class Brand {
 	
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	public int ID;
 	public String name;
 //	public Set<Product> products;
 	
 	public Brand() {};
 	
-	public Brand(int ID, String name)
+	public Brand(String name)
 	{
-		this.ID = ID;
 		this.name = name;		
 	}
 	
