@@ -18,13 +18,15 @@ public class Brand {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	public int ID;
 	public String name;
+	public String category;
 //	public Set<Product> products;
 	
 	public Brand() {};
 	
-	public Brand(String name)
+	public Brand(String name, String category)
 	{
 		this.name = name;		
+		this.category = category;
 	}
 	
 //	@OneToMany(mappedBy="brand_id", cascade = CascadeType.ALL)

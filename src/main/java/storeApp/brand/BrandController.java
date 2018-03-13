@@ -1,5 +1,7 @@
 package storeApp.brand;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,9 +33,11 @@ public class BrandController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public void register(@RequestParam("name")String name)
+	public void register(HttpServletRequest request)
 	{
-		Brand b = new Brand(name);
+		String name = request.getParameter("name");
+		String category = request.getParameter("category");
+		Brand b = new Brand(name , category);
 		brandRepo.save(b);
 		// Redirect user to the home page
 	}
