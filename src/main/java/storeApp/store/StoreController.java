@@ -1,5 +1,7 @@
 package storeApp.store;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,11 +33,12 @@ public class StoreController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public void addStore(@RequestParam("name")String name, 
-			@RequestParam("address")String address,
-			@RequestParam("type")String type,
-			@RequestParam("location")String location)
+	public void addStore(HttpServletRequest request)
 	{
+		String name = request.getParameter("name");
+		String address = request.getParameter("address");
+		String type = request.getParameter("type");
+		String location = request.getParameter("location");
 		Store s = new Store(name, address, type, location);
 		storeRepo.save(s);
 		// Redirect user to the home page

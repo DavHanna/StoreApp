@@ -15,7 +15,7 @@ public class Store {
 	public String address;
 	public String type;
 	public String location;
-	public boolean accepcted;
+	public boolean accepted;
 	
 	
 	public Store() {}
@@ -25,7 +25,7 @@ public class Store {
 		this.address = address;
 		this.type = type;
 		this.location = location;
-		this.accepcted = false;
+		this.accepted = false;
 	}
 	
 
