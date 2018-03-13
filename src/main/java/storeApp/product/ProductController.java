@@ -1,5 +1,7 @@
 package storeApp.product;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,13 +33,16 @@ public class ProductController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public void register(@RequestParam("name")String name, 
-			@RequestParam("price")double price,
-			@RequestParam("category")String category,
-			@RequestParam("productType")String productType,
-			@RequestParam("brandId")int brandId)
+	public void create(HttpServletRequest request)
 	{
-		Product p = new Product(name, price, category, productType, brandId);
+		String name = request.getParameter("name");
+		String price = request.getParameter("price");
+		double price1= Double.parseDouble(price);
+		String category = request.getParameter("category");
+		String productType = request.getParameter("productType");
+		String brandId = request.getParameter("brandId");
+		int id=Integer.parseInt(brandId);
+		Product p = new Product(name, price1, category, productType, id);
 		productRepo.save(p);
 		// Redirect user to the home page
 	}
