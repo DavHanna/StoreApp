@@ -33,7 +33,7 @@ public class BrandController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public void register(HttpServletRequest request)
+	public void addBrand(HttpServletRequest request)
 	{
 		String name = request.getParameter("name");
 		String category = request.getParameter("category");

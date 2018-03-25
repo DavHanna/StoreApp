@@ -23,13 +23,4 @@ public class HomeController {
 		return "Index";
 	}
 	
-	@RequestMapping("/insert")
-	public Product insert()
-	{
-		Brand b = new Brand("Adidas", "Sport");
-		Product p = new Product("Shoes", 14.5, "Adidas", "Onsite", b.ID);
-		brandRepo.save(b);
-		productRepo.save(p);
-		return p;
-	}
 }
