@@ -19,6 +19,7 @@ public class Product {
 	public String category;
 	public String productType;
 	public int brandId;
+	public int quantity;
 	
 	public Product() {};
 	
