@@ -1,6 +1,5 @@
 package storeApp.order;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -37,13 +36,9 @@ public class Order {
 	
 	public Order(User user, Set<Product> products, double total)
 	{
-//		this.user = user;
-//		this.products = products;
+		this.user = user;
+		this.products = products;
 		this.total = total;
 	}
 	
-	
-//    public Set<Product> getPublishers() {
-//        return products;
-//    }
 }

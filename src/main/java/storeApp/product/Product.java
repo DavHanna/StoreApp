@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-
 import storeApp.brand.Brand;
 import storeApp.order.Order;
 
@@ -22,32 +21,23 @@ public class Product {
 	public double price;
 	public String category;
 	public String productType;
-	public int brandId;
+	@ManyToOne
+    @JoinColumn(name = "brand_id")
+	public Brand brand;
 	public int quantity;
 	@ManyToMany(mappedBy = "products")
 	public Set<Order> orders;
 	
 	public Product() {};
 	
-	public Product(String name, double price, String category, String productType, int brandId)
+	public Product(String name, double price, String category, String productType, Brand brand)
 	{
 		this.name = name;
 		this.price = price;
 		this.category = category;
 		this.productType = productType;
-		this.brandId = brandId;
+		this.brand = brand;
 		
 	}
 	
-//	@ManyToOne
-//	@JoinColumn(name = "brand_id")
-//	public Brand brand()
-//	{
-//		return brand;
-//	}
-	
-	
-//    public Set<Order> getOrders() {
-//        return orders;
-//    }
 }

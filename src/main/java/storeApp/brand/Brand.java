@@ -19,7 +19,8 @@ public class Brand {
 	public int ID;
 	public String name;
 	public String category;
-//	public Set<Product> products;
+	@OneToMany(mappedBy = "brand", cascade = CascadeType.ALL)
+	public Set<Product> products;
 	
 	public Brand() {};
 	
@@ -28,11 +29,5 @@ public class Brand {
 		this.name = name;		
 		this.category = category;
 	}
-	
-//	@OneToMany(mappedBy="brand_id", cascade = CascadeType.ALL)
-//	public Set<Product> getProducts()
-//	{
-//		return products;
-//	}
 
 }

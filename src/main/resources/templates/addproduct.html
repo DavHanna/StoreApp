@@ -22,7 +22,10 @@
     <input name="productType" placeholder="Product Type" type="text"></input>
   </div>
   <div>
-    <input name="brandId" placeholder="Brand ID" type="text"></input>
+    <select name="brandId">
+    	<option selected="selected" disabled="disabled">Please select the brand</option>
+    	<option th:each="brand: ${brands}" th:value="${brand.ID}" th:text="${brand.name}"></option>
+    </select>
   </div>
     <button type="submit">
     Add
