@@ -20,18 +20,17 @@ public class StoreController {
 	@RequestMapping(method=RequestMethod.GET)
 	public String index() 
 	{
-		// Return the list of stores
-		return "";
+		return "stores/index";
 	}
 	
 	@RequestMapping(value="/create", method=RequestMethod.GET)
 	public String create() 
 	{
-		return "addStore";
+		return "stores/create";
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public void store(HttpServletRequest request)
+	public String store(HttpServletRequest request)
 	{
 		String name = request.getParameter("name");
 		String address = request.getParameter("address");
@@ -39,6 +38,7 @@ public class StoreController {
 		String location = request.getParameter("location");
 		Store s = new Store(name, address, type, location);
 		storeRepo.save(s);
-		// Redirect user to the home page
+
+		return "redirect:/";
 	}
 }
