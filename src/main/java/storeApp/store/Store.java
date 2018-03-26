@@ -10,7 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
+import storeApp.order.Order;
 import storeApp.product.Product;
 
 @Entity
@@ -27,6 +29,8 @@ public class Store {
 	@ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "store_product", joinColumns = @JoinColumn(name = "store_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
 	public Set<Product> products;
+	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+	public Set<Order> orders;
 	
 	
 	public Store() {}

@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 
 import storeApp.User.User;
 import storeApp.product.Product;
+import storeApp.store.Store;
 
 @Entity
 @Table(name="orders")
@@ -24,6 +25,9 @@ public class Order {
 	@ManyToOne
     @JoinColumn(name = "user_id")
 	public User user;
+	@ManyToOne
+    @JoinColumn(name = "store_id")
+	public Store store;
 	@ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "order_product", joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
 	public Set<Product> products;
