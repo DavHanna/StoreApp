@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import storeApp.store.Store;
 import storeApp.store.StoreRepository;
@@ -26,14 +24,14 @@ public class StoreController {
 		return "";
 	}
 	
-	@RequestMapping(value="/add", method=RequestMethod.GET)
-	public String displayAddStoreForm() 
+	@RequestMapping(value="/create", method=RequestMethod.GET)
+	public String create() 
 	{
 		return "addStore";
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public void addStore(HttpServletRequest request)
+	public void store(HttpServletRequest request)
 	{
 		String name = request.getParameter("name");
 		String address = request.getParameter("address");

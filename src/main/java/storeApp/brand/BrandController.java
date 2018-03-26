@@ -6,11 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import storeApp.User.User;
-import storeApp.User.UserRepository;
 
 @Controller
 @RequestMapping("/brands")
@@ -26,14 +21,14 @@ public class BrandController {
 		// Render the brands list
 	}
 	
-	@RequestMapping(value="/add", method=RequestMethod.GET)
-	public String brand() 
+	@RequestMapping(value="/create", method=RequestMethod.GET)
+	public String create() 
 	{
 		return "addBrand";
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public void addBrand(HttpServletRequest request)
+	public void store(HttpServletRequest request)
 	{
 		String name = request.getParameter("name");
 		String category = request.getParameter("category");

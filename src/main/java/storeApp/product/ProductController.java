@@ -28,15 +28,15 @@ public class ProductController {
 		return "productIndex";
 	}
 	
-	@RequestMapping(value="/add", method=RequestMethod.GET)
-	public String product(Model model) 
+	@RequestMapping(value="/create", method=RequestMethod.GET)
+	public String create(Model model) 
 	{
 		model.addAttribute("brands", brandRepo.findAll());
 		return "addProduct";
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public String create(HttpServletRequest request)
+	public String store(HttpServletRequest request)
 	{
 		String name = request.getParameter("name");
 		String price = request.getParameter("price");
