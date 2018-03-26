@@ -4,13 +4,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
-import storeApp.User.User;
-import storeApp.User.UserRepository;
+
 
 @Controller
 @RequestMapping("/products")
@@ -20,10 +18,10 @@ public class ProductController {
 	ProductRepository productRepo;
 
 	@RequestMapping(method=RequestMethod.GET)
-	public String index() 
+	public String index(Model model) 
 	{
+		model.addAttribute("products", productRepo.findAll());
 		return "productIndex";
-		// Render the products list
 	}
 	
 	@RequestMapping(value="/add", method=RequestMethod.GET)
@@ -33,7 +31,7 @@ public class ProductController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public void create(HttpServletRequest request)
+	public String create(HttpServletRequest request)
 	{
 		String name = request.getParameter("name");
 		String price = request.getParameter("price");
@@ -44,6 +42,8 @@ public class ProductController {
 		int id=Integer.parseInt(brandId);
 		Product p = new Product(name, price1, category, productType, id);
 		productRepo.save(p);
-		// Redirect user to the home page
+
+		return "redirect:/products";
+		
 	}
 }
