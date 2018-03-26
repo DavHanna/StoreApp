@@ -17,14 +17,14 @@ public class BrandController {
 	@RequestMapping(method=RequestMethod.GET)
 	public String index() 
 	{
-		return "brandIndex";
+		return "brands/index";
 		// Render the brands list
 	}
 	
 	@RequestMapping(value="/create", method=RequestMethod.GET)
 	public String create() 
 	{
-		return "addBrand";
+		return "brands/create";
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)

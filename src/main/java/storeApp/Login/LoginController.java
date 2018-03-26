@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import storeApp.User.User;
 import storeApp.User.UserRepository;
@@ -22,7 +20,7 @@ public class LoginController {
 	@GetMapping("/login")
 	public String index(Model model) 
 	{		
-		return "login";
+		return "auth/login";
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
@@ -33,6 +31,6 @@ public class LoginController {
 		if (user == null || user.password != password)
 			return "wrongCredentials";
 		
-		return "addProduct";
+		return "redirect:/";
 	}
 }

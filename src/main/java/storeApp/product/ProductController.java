@@ -25,14 +25,14 @@ public class ProductController {
 	public String index(Model model) 
 	{
 		model.addAttribute("products", productRepo.findAll());
-		return "productIndex";
+		return "products/index";
 	}
 	
 	@RequestMapping(value="/create", method=RequestMethod.GET)
 	public String create(Model model) 
 	{
 		model.addAttribute("brands", brandRepo.findAll());
-		return "addProduct";
+		return "products/create";
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)

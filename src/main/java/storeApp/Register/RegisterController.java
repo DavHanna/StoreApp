@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import storeApp.User.User;
 import storeApp.User.UserRepository;
@@ -20,8 +19,7 @@ public class RegisterController {
 	@RequestMapping(method=RequestMethod.GET )
 	public String index() 
 	{
-		return "register";
-		// Render the register view
+		return "auth/register";
 	}
 	
 	
