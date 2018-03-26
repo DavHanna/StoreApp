@@ -5,8 +5,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
+ 
+ 	<h1>Brands list</h1>
+ 
+ 	<ul>
+		<li th:each="brand : ${brands}">
+		   <span th:text="${ brand.name }">Brand name</span>
+		</li>
+	</ul>
 
-	<h1>This is where the list of brands will be listed.</h1> 
-    
 </body>
 </html>

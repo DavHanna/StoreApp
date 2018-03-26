@@ -5,8 +5,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
+ 
+ 	<h1>Stores list</h1>
+ 
+ 	<ul>
+		<li th:each="store : ${stores}">
+		   <span th:text="${ store.name }">Store name</span>
+		</li>
+	</ul>
 
-	<h1>This is where the list of stores will be listed.</h1> 
-    
 </body>
 </html>

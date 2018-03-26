@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -18,8 +19,9 @@ public class StoreController {
 	StoreRepository storeRepo;
 
 	@RequestMapping(method=RequestMethod.GET)
-	public String index() 
+	public String index(Model model) 
 	{
+		model.addAttribute("stores", storeRepo.findAll());
 		return "stores/index";
 	}
 	
@@ -39,6 +41,6 @@ public class StoreController {
 		Store s = new Store(name, address, type, location);
 		storeRepo.save(s);
 
-		return "redirect:/";
+		return "redirect:/stores";
 	}
 }

@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -15,10 +16,10 @@ public class BrandController {
 	BrandRepository brandRepo;
 
 	@RequestMapping(method=RequestMethod.GET)
-	public String index() 
+	public String index(Model model) 
 	{
+		model.addAttribute("brands", brandRepo.findAll());
 		return "brands/index";
-		// Render the brands list
 	}
 	
 	@RequestMapping(value="/create", method=RequestMethod.GET)
@@ -28,12 +29,13 @@ public class BrandController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public void store(HttpServletRequest request)
+	public String store(HttpServletRequest request)
 	{
 		String name = request.getParameter("name");
 		String category = request.getParameter("category");
 		Brand b = new Brand(name , category);
 		brandRepo.save(b);
-		// Redirect user to the home page
+
+		return "redirect:/brands";
 	}
 }
