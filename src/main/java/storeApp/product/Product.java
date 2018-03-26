@@ -9,8 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+
+
 import storeApp.brand.Brand;
 import storeApp.order.Order;
+import storeApp.store.Store;
 
 @Entity
 public class Product {
@@ -27,6 +30,8 @@ public class Product {
 	public int quantity;
 	@ManyToMany(mappedBy = "products")
 	public Set<Order> orders;
+	@ManyToMany(mappedBy = "products")
+	public Set<Store> stores;
 	
 	public Product() {};
 	
