@@ -1,13 +1,17 @@
 package storeApp.product;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import storeApp.brand.Brand;
+import storeApp.order.Order;
 
 @Entity
 public class Product {
@@ -20,6 +24,8 @@ public class Product {
 	public String productType;
 	public int brandId;
 	public int quantity;
+	@ManyToMany(mappedBy = "products")
+	public Set<Order> orders;
 	
 	public Product() {};
 	
@@ -39,4 +45,9 @@ public class Product {
 //	{
 //		return brand;
 //	}
+	
+	
+//    public Set<Order> getOrders() {
+//        return orders;
+//    }
 }

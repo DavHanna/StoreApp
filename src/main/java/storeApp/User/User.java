@@ -1,10 +1,16 @@
 package storeApp.User;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
+import javax.persistence.OneToMany;
+
+import storeApp.order.Order;
 
 @Entity
 @Inheritance
@@ -15,6 +21,8 @@ public class User {
 	public String username;
 	public String password;
 	public String type;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	public Set<Order> orders;
 	
 	public User() {};
 	
