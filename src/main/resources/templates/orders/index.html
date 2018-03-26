@@ -6,14 +6,11 @@
 </head>
 <body>
  
- 	<h1>Products list</h1>
+ 	<h1>Orders list</h1>
  
  	<ul>
-		<li th:each="product : ${products}">
-			<span th:text="${ product.name }">Product name</span>
-			<a th:href="'/orders/create/' + ${product.ID}">
-			   Buy
-			</a>   
+		<li th:each="order : ${orders}">
+		   <span th:text="'ID: ' + ${order.ID} + ' Total: ' + ${order.total}"></span>
 		</li>
 	</ul>
 

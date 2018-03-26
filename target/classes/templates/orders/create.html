@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+ 
+ 	<h1>Place order for product: <span th:text="${product.name}"></span></h1>
+ 
+ 	<span>Price per piece = <span th:text="${product.price}"></span></span>
+ 
+	<form style="align:center" method="post" action="/orders">
+		<label>Quantity: </label>
+		<input type="number" name="quantity" min="1" max="5" />
+		<input type="hidden" name="productId" th:value="${product.ID}" />
+		<button type="submit">
+			Order
+		</button>
+	</form>
+
+</body>
+</html>

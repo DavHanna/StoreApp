@@ -38,9 +38,8 @@ public class Order {
 		
 	}
 	
-	public Order(User user, Set<Product> products, double total)
+	public Order(Set<Product> products, double total)
 	{
-		this.user = user;
 		this.products = products;
 		this.total = total;
 	}
