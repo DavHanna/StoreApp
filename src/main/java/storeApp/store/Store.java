@@ -26,6 +26,11 @@ public class Store {
 	@ManyToOne
     @JoinColumn(name = "owner_id")
 	public User owner;
+	
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "store_collaborator", joinColumns = @JoinColumn(name = "store_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "collaborator_id", referencedColumnName = "id"))
+	public Set<User> collaborators;
+	
 	public String name;
 	public String address;
 	public String type;

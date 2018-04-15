@@ -93,9 +93,19 @@ public class StoreController {
 			return "message";
 		}
 		
+		User collaborator = null;
+		
 		if(session.getAttribute("user_id") == null || (Integer) session.getAttribute("user_id") != store.owner.ID) {
-			model.addAttribute("message", "Unauthorized operation!");
-			return "message";
+			
+			// Check if user is a collaborator
+			User user = userRepo.findOne((Integer) session.getAttribute("user_id"));
+			if(store.collaborators.contains(user)) {
+				collaborator = user;
+			} else {
+				model.addAttribute("message", "Unauthorized operation!");
+				return "message";
+			}
+			
 		}
 		
 		// Load the products
@@ -116,13 +126,66 @@ public class StoreController {
 			return "message";
 		}
 		
+		User collaborator = null;
+		
+		if(session.getAttribute("user_id") == null || (Integer) session.getAttribute("user_id") != store.owner.ID) {
+			// Check if user is a collaborator
+			User user = userRepo.findOne((Integer) session.getAttribute("user_id"));
+			if(store.collaborators.contains(user)) {
+				collaborator = user;
+			} else {
+				model.addAttribute("message", "Unauthorized operation!");
+				return "message";
+			}
+		}
+		
+		// Store the product
+		store.products.add(productRepo.findOne(Integer.parseInt(request.getParameter("product-id"))));
+		storeRepo.save(store);
+		
+		return "redirect:/stores/" + store.id + "/products";
+	}
+	
+	@RequestMapping(value="/{storeId}/addCollaborator", method=RequestMethod.GET)
+	public String addCollaborator(HttpServletRequest request, HttpSession session, Model model,@PathVariable("storeId") int storeId) 
+	{
+		// Get current store
+		Store store = storeRepo.findOne(storeId);
+		if (store == null) {
+			model.addAttribute("message", "Invalid store!");
+			return "message";
+		}
+		
+		if(session.getAttribute("user_id") == null || (Integer) session.getAttribute("user_id") != store.owner.ID) {
+			model.addAttribute("message", "Unauthorized operation!");
+			return "message";
+		}
+		
+		// Load the users
+		model.addAttribute("users", userRepo.findAll());
+		
+		model.addAttribute("store", store);
+		
+		return "stores/addCollaborator";
+	}
+	
+	@RequestMapping(value="/{storeId}/addCollaborator", method=RequestMethod.POST)
+	public String storeCollaborator(HttpServletRequest request, HttpSession session, Model model,@PathVariable("storeId") int storeId) 
+	{
+		// Get current store
+		Store store = storeRepo.findOne(storeId);
+		if (store == null) {
+			model.addAttribute("message", "Invalid store!");
+			return "message";
+		}
+		
 		if(session.getAttribute("user_id") == null || (Integer) session.getAttribute("user_id") != store.owner.ID) {
 			model.addAttribute("message", "Unauthorized operation!");
 			return "message";
 		}
 		
 		// Store the product
-		store.products.add(productRepo.findOne(Integer.parseInt(request.getParameter("product-id"))));
+		store.collaborators.add(userRepo.findOne(Integer.parseInt(request.getParameter("user-id"))));
 		storeRepo.save(store);
 		
 		return "redirect:/stores/" + store.id + "/products";
