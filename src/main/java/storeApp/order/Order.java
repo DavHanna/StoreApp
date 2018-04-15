@@ -38,8 +38,9 @@ public class Order {
 		
 	}
 	
-	public Order(Set<Product> products, double total)
+	public Order(Store store, Set<Product> products, double total)
 	{
+		this.store = store;
 		this.products = products;
 		this.total = total;
 	}

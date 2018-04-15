@@ -9,8 +9,11 @@
  	<h1>Products list</h1>
  
  	<ul>
-		<li th:each="product : ${products}">
-			<span th:text="${ product.name }">Product name</span>  
+		<li th:each="product : ${store.products}">
+			<span th:text="${ product.name }">Product name</span>
+			<a th:href="'/orders/create/' + ${store.id} + '/' + ${product.ID}">
+			   Buy
+			</a>   
 		</li>
 	</ul>
 

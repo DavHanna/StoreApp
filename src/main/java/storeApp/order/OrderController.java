@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import storeApp.User.UserRepository;
 import storeApp.product.Product;
 import storeApp.product.ProductRepository;
+import storeApp.store.Store;
+import storeApp.store.StoreRepository;
 
 @Controller
 @RequestMapping("/orders")
@@ -26,6 +28,8 @@ public class OrderController {
 	OrderRepository orderRepo;
 	@Autowired
 	UserRepository userRepo;
+	@Autowired
+	StoreRepository storeRepo;
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public String index(Model model) 
@@ -34,10 +38,11 @@ public class OrderController {
 		return "orders/index";
 	}
 	
-	@RequestMapping(value="/create/{productId}", method=RequestMethod.GET)
-	public String create(Model model, @PathVariable("productId") int productId) 
+	@RequestMapping(value="/create/{storeId}/{productId}", method=RequestMethod.GET)
+	public String create(Model model, @PathVariable("storeId") int storeId, @PathVariable("productId") int productId) 
 	{
 		model.addAttribute("product", productRepo.findOne(productId));
+		model.addAttribute("store", storeRepo.findOne(storeId));
 		return "orders/create";
 	}
 	
@@ -45,14 +50,16 @@ public class OrderController {
 	public String store(HttpServletRequest request)
 	{
 		int productId = Integer.parseInt(request.getParameter("productId"));
+		int storeId = Integer.parseInt(request.getParameter("storeId"));
 		int quantity = Integer.parseInt(request.getParameter("quantity"));
 		
 		Product product = productRepo.findOne(productId);
+		Store store = storeRepo.findOne(storeId);
 
 		Set<Product> products = new HashSet<Product>();
 		products.add(product);
 		
-		Order o = new Order(products, product.price * quantity);
+		Order o = new Order(store, products, product.price * quantity);
 
 		orderRepo.save(o);
 

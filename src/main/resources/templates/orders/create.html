@@ -14,6 +14,7 @@
 		<label>Quantity: </label>
 		<input type="number" name="quantity" min="1" max="5" />
 		<input type="hidden" name="productId" th:value="${product.ID}" />
+		<input type="hidden" name="storeId" th:value="${store.id}" />
 		<button type="submit">
 			Order
 		</button>
