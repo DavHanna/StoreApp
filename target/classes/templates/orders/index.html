@@ -10,7 +10,7 @@
  
  	<ul>
 		<li th:each="order : ${orders}">
-		   <span th:text="'ID: ' + ${order.ID} + ' Total: ' + ${order.total}"></span>
+		   <span th:text="'ID: ' + ${order.ID} + ' Total: ' + ${order.total} + ' Address: ' + ${order.shippingAddress}"></span>
 		</li>
 	</ul>
 

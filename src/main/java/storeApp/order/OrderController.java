@@ -59,7 +59,7 @@ public class OrderController {
 		Set<Product> products = new HashSet<Product>();
 		products.add(product);
 		
-		Order o = new Order(store, products, product.price * quantity);
+		Order o = new Order(store, products, product.price * quantity, request.getParameter("shipping-address"));
 
 		orderRepo.save(o);
 

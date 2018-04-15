@@ -33,16 +33,19 @@ public class Order {
 	public Set<Product> products;
 	public double total;
 	
+	public String shippingAddress;
+	
 	public Order()
 	{
 		
 	}
 	
-	public Order(Store store, Set<Product> products, double total)
+	public Order(Store store, Set<Product> products, double total, String shippingAddress)
 	{
 		this.store = store;
 		this.products = products;
 		this.total = total;
+		this.shippingAddress = shippingAddress;
 	}
 	
 }
