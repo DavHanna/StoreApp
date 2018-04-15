@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import storeApp.User.User;
 import storeApp.User.UserRepository;
+import storeApp.action.Action;
+import storeApp.product.Product;
 import storeApp.product.ProductRepository;
 import storeApp.store.Store;
 import storeApp.store.StoreRepository;
@@ -93,7 +95,7 @@ public class StoreController {
 			return "message";
 		}
 		
-		User collaborator = null;
+		User moderator = store.owner;
 		
 		if(session.getAttribute("user_id") == null) {
 			model.addAttribute("message", "You must be logged in!");
@@ -102,7 +104,7 @@ public class StoreController {
 			// Check if user is a collaborator
 			User user = userRepo.findOne((Integer) session.getAttribute("user_id"));
 			if(store.collaborators.contains(user)) {
-				collaborator = user;
+				moderator = user;
 			} else {
 				model.addAttribute("message", "Unauthorized operation!");
 				return "message";
@@ -127,7 +129,7 @@ public class StoreController {
 			return "message";
 		}
 		
-		User collaborator = null;
+		User moderator = store.owner;
 		
 		if(session.getAttribute("user_id") == null) {
 			model.addAttribute("message", "You must be logged in!");
@@ -136,7 +138,7 @@ public class StoreController {
 			// Check if user is a collaborator
 			User user = userRepo.findOne((Integer) session.getAttribute("user_id"));
 			if(store.collaborators.contains(user)) {
-				collaborator = user;
+				moderator = user;
 			} else {
 				model.addAttribute("message", "Unauthorized operation!");
 				return "message";
@@ -144,7 +146,10 @@ public class StoreController {
 		}
 		
 		// Store the product
-		store.products.add(productRepo.findOne(Integer.parseInt(request.getParameter("product-id"))));
+		Product product = productRepo.findOne(Integer.parseInt(request.getParameter("product-id")));
+		store.products.add(product);
+		// Record the action
+		store.actions.add(new Action(moderator, store, product, "Product added"));
 		storeRepo.save(store);
 		
 		return "redirect:/stores/" + store.id + "/products";
@@ -160,7 +165,7 @@ public class StoreController {
 			return "message";
 		}
 		
-		User collaborator = null;
+		User moderator = store.owner;
 		
 		if(session.getAttribute("user_id") == null) {
 			model.addAttribute("message", "You must be logged in!");
@@ -169,7 +174,7 @@ public class StoreController {
 			// Check if user is a collaborator
 			User user = userRepo.findOne((Integer) session.getAttribute("user_id"));
 			if(store.collaborators.contains(user)) {
-				collaborator = user;
+				moderator = user;
 			} else {
 				model.addAttribute("message", "Unauthorized operation!");
 				return "message";
@@ -194,7 +199,7 @@ public class StoreController {
 			return "message";
 		}
 		
-		User collaborator = null;
+		User moderator = store.owner;
 		
 		if(session.getAttribute("user_id") == null) {
 			model.addAttribute("message", "You must be logged in!");
@@ -203,7 +208,7 @@ public class StoreController {
 			// Check if user is a collaborator
 			User user = userRepo.findOne((Integer) session.getAttribute("user_id"));
 			if(store.collaborators.contains(user)) {
-				collaborator = user;
+				moderator = user;
 			} else {
 				model.addAttribute("message", "Unauthorized operation!");
 				return "message";
@@ -211,7 +216,10 @@ public class StoreController {
 		}
 		
 		// Store the product
-		store.products.remove(productRepo.findOne(Integer.parseInt(request.getParameter("product-id"))));
+		Product product = productRepo.findOne(Integer.parseInt(request.getParameter("product-id")));
+		store.products.remove(product);
+		// Record the action
+		store.actions.add(new Action(moderator, store, product, "Product deleted"));
 		storeRepo.save(store);
 		
 		return "redirect:/stores/" + store.id + "/products";

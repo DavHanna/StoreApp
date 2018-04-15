@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import storeApp.User.User;
+import storeApp.action.Action;
 import storeApp.order.Order;
 import storeApp.product.Product;
 
@@ -41,6 +42,8 @@ public class Store {
 	public Set<Product> products;
 	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
 	public Set<Order> orders;
+	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+	public Set<Action> actions;
 	
 	
 	public Store() {}

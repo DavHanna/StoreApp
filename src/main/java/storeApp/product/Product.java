@@ -2,6 +2,7 @@ package storeApp.product;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,8 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
-
+import storeApp.action.Action;
 import storeApp.brand.Brand;
 import storeApp.order.Order;
 import storeApp.store.Store;
@@ -32,6 +34,9 @@ public class Product {
 	public Set<Order> orders;
 	@ManyToMany(mappedBy = "products")
 	public Set<Store> stores;
+	
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+	public Set<Action> actions;
 	
 	public Product() {};
 	

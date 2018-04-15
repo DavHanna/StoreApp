@@ -11,6 +11,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import storeApp.action.Action;
 import storeApp.order.Order;
 import storeApp.store.Store;
 
@@ -28,6 +29,9 @@ public class User {
 	
 	@ManyToMany(mappedBy = "collaborators")
 	public Set<Store> stores;
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	public Set<Action> actions;
 	
 	public User() {};
 	
