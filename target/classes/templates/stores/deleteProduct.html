@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+ 
+    <form style="align:center" method="post" th:action="@{/stores/__${store.id}__/deleteProduct}">
+<fieldset>
+  <div>
+    <select name="product-id">
+    	<option selected="selected" disabled="disabled">Please select the product</option>
+    	<option th:each="product: ${products}" th:value="${product.ID}" th:text="${product.name}"></option>
+    </select>
+  </div>
+    <button type="submit">
+    Add
+  </button>
+
+  </fieldset>
+    </form>
+</body>
+</html>

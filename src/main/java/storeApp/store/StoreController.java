@@ -95,8 +95,10 @@ public class StoreController {
 		
 		User collaborator = null;
 		
-		if(session.getAttribute("user_id") == null || (Integer) session.getAttribute("user_id") != store.owner.ID) {
-			
+		if(session.getAttribute("user_id") == null) {
+			model.addAttribute("message", "You must be logged in!");
+			return "message";
+		} else if ((Integer) session.getAttribute("user_id") != store.owner.ID) {
 			// Check if user is a collaborator
 			User user = userRepo.findOne((Integer) session.getAttribute("user_id"));
 			if(store.collaborators.contains(user)) {
@@ -105,7 +107,6 @@ public class StoreController {
 				model.addAttribute("message", "Unauthorized operation!");
 				return "message";
 			}
-			
 		}
 		
 		// Load the products
@@ -128,7 +129,10 @@ public class StoreController {
 		
 		User collaborator = null;
 		
-		if(session.getAttribute("user_id") == null || (Integer) session.getAttribute("user_id") != store.owner.ID) {
+		if(session.getAttribute("user_id") == null) {
+			model.addAttribute("message", "You must be logged in!");
+			return "message";
+		} else if ((Integer) session.getAttribute("user_id") != store.owner.ID) {
 			// Check if user is a collaborator
 			User user = userRepo.findOne((Integer) session.getAttribute("user_id"));
 			if(store.collaborators.contains(user)) {
@@ -141,6 +145,73 @@ public class StoreController {
 		
 		// Store the product
 		store.products.add(productRepo.findOne(Integer.parseInt(request.getParameter("product-id"))));
+		storeRepo.save(store);
+		
+		return "redirect:/stores/" + store.id + "/products";
+	}
+	
+	@RequestMapping(value="/{storeId}/deleteProduct", method=RequestMethod.GET)
+	public String deleteProduct(HttpServletRequest request, HttpSession session, Model model,@PathVariable("storeId") int storeId) 
+	{
+		// Get current store
+		Store store = storeRepo.findOne(storeId);
+		if (store == null) {
+			model.addAttribute("message", "Invalid store!");
+			return "message";
+		}
+		
+		User collaborator = null;
+		
+		if(session.getAttribute("user_id") == null) {
+			model.addAttribute("message", "You must be logged in!");
+			return "message";
+		} else if ((Integer) session.getAttribute("user_id") != store.owner.ID) {
+			// Check if user is a collaborator
+			User user = userRepo.findOne((Integer) session.getAttribute("user_id"));
+			if(store.collaborators.contains(user)) {
+				collaborator = user;
+			} else {
+				model.addAttribute("message", "Unauthorized operation!");
+				return "message";
+			}
+		}
+		
+		// Load the products
+		model.addAttribute("products", store.products);
+		
+		model.addAttribute("store", store);
+		
+		return "stores/deleteProduct";
+	}
+	
+	@RequestMapping(value="/{storeId}/deleteProduct", method=RequestMethod.POST)
+	public String destroyProduct(HttpServletRequest request, HttpSession session, Model model,@PathVariable("storeId") int storeId) 
+	{
+		// Get current store
+		Store store = storeRepo.findOne(storeId);
+		if (store == null) {
+			model.addAttribute("message", "Invalid store!");
+			return "message";
+		}
+		
+		User collaborator = null;
+		
+		if(session.getAttribute("user_id") == null) {
+			model.addAttribute("message", "You must be logged in!");
+			return "message";
+		} else if ((Integer) session.getAttribute("user_id") != store.owner.ID) {
+			// Check if user is a collaborator
+			User user = userRepo.findOne((Integer) session.getAttribute("user_id"));
+			if(store.collaborators.contains(user)) {
+				collaborator = user;
+			} else {
+				model.addAttribute("message", "Unauthorized operation!");
+				return "message";
+			}
+		}
+		
+		// Store the product
+		store.products.remove(productRepo.findOne(Integer.parseInt(request.getParameter("product-id"))));
 		storeRepo.save(store);
 		
 		return "redirect:/stores/" + store.id + "/products";
