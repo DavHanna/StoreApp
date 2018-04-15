@@ -28,7 +28,7 @@ public class LoginController {
 	{
 		User user = userRepo.findByUsername(username);
 		
-		if (user == null || user.password != password)
+		if (user == null || !user.password.equals(password))
 			return "wrongCredentials";
 		
 		return "redirect:/";
