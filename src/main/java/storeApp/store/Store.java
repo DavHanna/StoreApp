@@ -10,8 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import storeApp.User.User;
 import storeApp.order.Order;
 import storeApp.product.Product;
 
@@ -21,6 +23,9 @@ public class Store {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	public int id;
+	@ManyToOne
+    @JoinColumn(name = "owner_id")
+	public User owner;
 	public String name;
 	public String address;
 	public String type;
@@ -35,7 +40,8 @@ public class Store {
 	
 	public Store() {}
 	
-	public Store(String name, String address, String type, String location) {
+	public Store(User owner, String name, String address, String type, String location) {
+		this.owner = owner;
 		this.name = name;
 		this.address = address;
 		this.type = type;
