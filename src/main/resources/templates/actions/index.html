@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+ 
+ <h1 th:text="@{Action history for __${store.name}__}"></h1>
+ 
+ 	<table>
+	 	<tr th:each="action : ${store.actions}">
+	 		<td th:text="${action.user.username}"></td>
+	 		<td th:text="${action.description}"></td>
+	 		<td th:text="${action.product.name}"></td>
+	 		<td th:text="${action.timestamp}"></td>
+	 	</tr>
+ 	</table>
+ 
+ 	
+</body>
+</html>
