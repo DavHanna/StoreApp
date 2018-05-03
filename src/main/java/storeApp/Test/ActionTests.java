@@ -38,7 +38,7 @@ public class ActionTests {
     }
 
 	@Test
-	public void testLogin() {
+	public void testIndex() {
 		User user = new User("khalid", "secret", "Store Owner");
 		user.ID = 1;
 		Store store = new Store(user, "name", "address", "Onsite", "location");
@@ -47,6 +47,30 @@ public class ActionTests {
 		when(mockHttpSession.getAttribute("user_id")).thenReturn(user.ID);
 		String result = this.ctrl.index(mockModel, mockHttpSession, store.id);
 		assertEquals("actions/index", result);
+	}
+	
+	@Test
+	public void testEmptyIndex() {
+		User user = new User("khalid", "secret", "Store Owner");
+		user.ID = 1;
+		Store store = new Store(user, "name", "address", "Onsite", "location");
+		store.id = 1;
+		when(storeRepo.findOne(store.id)).thenReturn(null);
+		when(mockHttpSession.getAttribute("user_id")).thenReturn(user.ID);
+		String result = this.ctrl.index(mockModel, mockHttpSession, store.id);
+		assertEquals("message", result);
+	}
+	
+	@Test
+	public void testInvalidIndex() {
+		User user = new User("khalid", "secret", "Store Owner");
+		user.ID = 1;
+		Store store = new Store(user, "name", "address", "Onsite", "location");
+		store.id = 1;
+		when(storeRepo.findOne(store.id)).thenReturn(store);
+		when(mockHttpSession.getAttribute("user_id")).thenReturn(2);
+		String result = this.ctrl.index(mockModel, mockHttpSession, store.id);
+		assertEquals("message", result);
 	}
 
 }
