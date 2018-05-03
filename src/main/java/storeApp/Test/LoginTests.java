@@ -37,5 +37,21 @@ public class LoginTests {
 		String result = this.ctrl.login("khalid", "secret", mockHttpSession);
 		assertEquals("redirect:/", result);
 	}
+	
+	@Test
+	public void testInvalidLogin() {
+		User user = new User("khalid", "secret", "Store Owner");
+		when(this.userRepo.findByUsername("khalid")).thenReturn(user);
+		String result = this.ctrl.login("khalid", "wrongPassword", mockHttpSession);
+		assertEquals("wrongCredentials", result);
+	}
+	
+	@Test
+	public void testEmptyLogin() {
+		User user = new User("khalid", "secret", "Store Owner");
+		when(this.userRepo.findByUsername("khalid")).thenReturn(user);
+		String result = this.ctrl.login("", "", mockHttpSession);
+		assertEquals("wrongCredentials", result);
+	}
 
 }
