@@ -54,6 +54,24 @@ public class StoreTests {
 	}
 	
 	@Test
+	public void testInvalidCreate()
+	{
+		when(mockHttpSession.getAttribute("user_id")).thenReturn(1);
+		when(mockHttpSession.getAttribute("user_type")).thenReturn("Normal User");
+		String result = this.ctrl.create(mockHttpSession, mockModel);
+		assertEquals("message", result);
+	}
+	
+	@Test
+	public void testEmptyCreate()
+	{
+		when(mockHttpSession.getAttribute("user_id")).thenReturn(null);
+		when(mockHttpSession.getAttribute("user_type")).thenReturn(null);
+		String result = this.ctrl.create(mockHttpSession, mockModel);
+		assertEquals("message", result);
+	}
+	
+	@Test
 	public void testStore() {
 		when(mockHttpSession.getAttribute("user_id")).thenReturn(1);
 		when(mockHttpSession.getAttribute("user_type")).thenReturn("Store Owner");
@@ -68,11 +86,55 @@ public class StoreTests {
 	}
 	
 	@Test
+	public void testInvalidStore() {
+		when(mockHttpSession.getAttribute("user_id")).thenReturn(1);
+		when(mockHttpSession.getAttribute("user_type")).thenReturn("Normal User");
+		when(mockRequest.getParameter("name")).thenReturn("Store name");
+		when(mockRequest.getParameter("address")).thenReturn("address");
+		when(mockRequest.getParameter("location")).thenReturn("location");
+		when(mockRequest.getParameter("type")).thenReturn("onsite");
+		when(userRepo.findOne(anyInt())).thenReturn(new User());
+		
+		String result = this.ctrl.store(mockRequest, mockHttpSession, mockModel);
+		assertEquals("message", result);
+	}
+	
+	@Test
+	public void testEmptyStore() {
+		when(mockHttpSession.getAttribute("user_id")).thenReturn(1);
+		when(mockHttpSession.getAttribute("user_type")).thenReturn("Store Owner");
+		when(mockRequest.getParameter("name")).thenReturn("");
+		when(mockRequest.getParameter("address")).thenReturn("address");
+		when(mockRequest.getParameter("location")).thenReturn("location");
+		when(mockRequest.getParameter("type")).thenReturn("onsite");
+		when(userRepo.findOne(anyInt())).thenReturn(new User());
+		
+		String result = this.ctrl.store(mockRequest, mockHttpSession, mockModel);
+		assertEquals("message", result);
+	}
+	
+	@Test
 	public void testShowProducts() {
 		when(storeRepo.findOne(anyInt())).thenReturn(new Store());
 		
 		String result = this.ctrl.showProducts(mockRequest, mockHttpSession, mockModel, 1);
 		assertEquals("stores/products", result);
+	}
+	
+	@Test
+	public void testInvalidProducts() {
+		when(storeRepo.findOne(anyInt())).thenReturn(null);
+		
+		String result = this.ctrl.showProducts(mockRequest, mockHttpSession, mockModel, 1);
+		assertEquals("message", result);
+	}
+	
+	@Test
+	public void testEmptyProducts() {
+		when(storeRepo.findOne(anyInt())).thenReturn(null);
+		
+		String result = this.ctrl.showProducts(mockRequest, mockHttpSession, mockModel, 1);
+		assertEquals("message", result);
 	}
 	
 	@Test
@@ -89,7 +151,81 @@ public class StoreTests {
 	}
 	
 	@Test
+	public void testInvalidAddProduct() {
+		when(mockHttpSession.getAttribute("user_id")).thenReturn(1);
+		when(mockHttpSession.getAttribute("user_type")).thenReturn("Normal User");
+		User user = new User();
+		user.ID = 1;
+		Store store = new Store();
+		store.owner = user;
+		when(storeRepo.findOne(anyInt())).thenReturn(store);
+		String result = this.ctrl.addProduct(mockRequest, mockHttpSession, mockModel, 1);
+		assertEquals("message", result);
+	}
+	
+	@Test
+	public void testEmptyAddProduct() {
+		when(mockHttpSession.getAttribute("user_id")).thenReturn(null);
+		when(mockHttpSession.getAttribute("user_type")).thenReturn("Store Owner");
+		User user = new User();
+		user.ID = 2;
+		Store store = new Store();
+		store.owner = user;
+		when(storeRepo.findOne(anyInt())).thenReturn(store);
+		String result = this.ctrl.addProduct(mockRequest, mockHttpSession, mockModel, 1);
+		assertEquals("message", result);
+	}
+	
+	@Test
 	public void testStoreProduct() {
+		when(mockHttpSession.getAttribute("user_id")).thenReturn(1);
+		when(mockHttpSession.getAttribute("user_type")).thenReturn("Store Owner");
+		when(mockRequest.getParameter("name")).thenReturn("Store name");
+		when(mockRequest.getParameter("address")).thenReturn("address");
+		when(mockRequest.getParameter("location")).thenReturn("location");
+		when(mockRequest.getParameter("type")).thenReturn("onsite");
+		when(userRepo.findOne(anyInt())).thenReturn(new User());
+		when(mockRequest.getParameter("product-id")).thenReturn("1");
+		when(productRepo.findOne(anyInt())).thenReturn(new Product());
+		User user = new User();
+		user.ID = 1;
+		Store store = new Store();
+		store.id = 1;
+		store.owner = user;
+		store.products = new HashSet<Product>();
+		store.actions = new HashSet<Action>();
+		when(storeRepo.findOne(anyInt())).thenReturn(store);
+		
+		String result = this.ctrl.storeProduct(mockRequest, mockHttpSession, mockModel, 1);
+		assertEquals("redirect:/stores/" + store.id + "/products", result);
+	}
+	
+	@Test
+	public void testInvalidStoreProduct() {
+		when(mockHttpSession.getAttribute("user_id")).thenReturn(1);
+		when(mockHttpSession.getAttribute("user_type")).thenReturn("Store Owner");
+		when(mockRequest.getParameter("name")).thenReturn("Store name");
+		when(mockRequest.getParameter("address")).thenReturn("address");
+		when(mockRequest.getParameter("location")).thenReturn("location");
+		when(mockRequest.getParameter("type")).thenReturn("onsite");
+		when(userRepo.findOne(anyInt())).thenReturn(new User());
+		when(mockRequest.getParameter("product-id")).thenReturn("1");
+		when(productRepo.findOne(anyInt())).thenReturn(new Product());
+		User user = new User();
+		user.ID = 1;
+		Store store = new Store();
+		store.id = 1;
+		store.owner = user;
+		store.products = new HashSet<Product>();
+		store.actions = new HashSet<Action>();
+		when(storeRepo.findOne(anyInt())).thenReturn(store);
+		
+		String result = this.ctrl.storeProduct(mockRequest, mockHttpSession, mockModel, 1);
+		assertEquals("redirect:/stores/" + store.id + "/products", result);
+	}
+	
+	@Test
+	public void testEmptyStoreProduct() {
 		when(mockHttpSession.getAttribute("user_id")).thenReturn(1);
 		when(mockHttpSession.getAttribute("user_type")).thenReturn("Store Owner");
 		when(mockRequest.getParameter("name")).thenReturn("Store name");
@@ -124,6 +260,32 @@ public class StoreTests {
 		String result = this.ctrl.deleteProduct(mockRequest, mockHttpSession, mockModel, 1);
 		assertEquals("stores/deleteProduct", result);
 	}
+	
+	@Test
+	public void testInvalidDeleteProduct() {
+		when(mockHttpSession.getAttribute("user_id")).thenReturn(1);
+		when(mockHttpSession.getAttribute("user_type")).thenReturn("Normal User");
+		User user = new User();
+		user.ID = 1;
+		Store store = new Store();
+		store.owner = user;
+		when(storeRepo.findOne(anyInt())).thenReturn(store);
+		String result = this.ctrl.deleteProduct(mockRequest, mockHttpSession, mockModel, 1);
+		assertEquals("message", result);
+	}
+	
+	@Test
+	public void testEmptyDeleteProduct() {
+		when(mockHttpSession.getAttribute("user_id")).thenReturn(1);
+		when(mockHttpSession.getAttribute("user_type")).thenReturn("Store Owner");
+		User user = new User();
+		user.ID = 1;
+		Store store = new Store();
+		store.owner = user;
+		when(storeRepo.findOne(anyInt())).thenReturn(null);
+		String result = this.ctrl.deleteProduct(mockRequest, mockHttpSession, mockModel, 1);
+		assertEquals("message", result);
+	}
 
 	@Test
 	public void testDestroyProduct() {
@@ -148,6 +310,54 @@ public class StoreTests {
 		String result = this.ctrl.destroyProduct(mockRequest, mockHttpSession, mockModel, 1);
 		assertEquals("redirect:/stores/" + store.id + "/products", result);
 	}
+	
+	@Test
+	public void testInvalidDestroyProduct() {
+		when(mockHttpSession.getAttribute("user_id")).thenReturn(1);
+		when(mockHttpSession.getAttribute("user_type")).thenReturn("Normal User");
+		when(mockRequest.getParameter("name")).thenReturn("Store name");
+		when(mockRequest.getParameter("address")).thenReturn("address");
+		when(mockRequest.getParameter("location")).thenReturn("location");
+		when(mockRequest.getParameter("type")).thenReturn("onsite");
+		when(userRepo.findOne(anyInt())).thenReturn(new User());
+		when(mockRequest.getParameter("product-id")).thenReturn("1");
+		when(productRepo.findOne(anyInt())).thenReturn(new Product());
+		User user = new User();
+		user.ID = 1;
+		Store store = new Store();
+		store.id = 1;
+		store.owner = user;
+		store.products = new HashSet<Product>();
+		store.actions = new HashSet<Action>();
+		when(storeRepo.findOne(anyInt())).thenReturn(store);
+		
+		String result = this.ctrl.destroyProduct(mockRequest, mockHttpSession, mockModel, 1);
+		assertEquals("message", result);
+	}
+	
+	@Test
+	public void testEmptyDestroyProduct() {
+		when(mockHttpSession.getAttribute("user_id")).thenReturn(1);
+		when(mockHttpSession.getAttribute("user_type")).thenReturn("Store Owner");
+		when(mockRequest.getParameter("name")).thenReturn("Store name");
+		when(mockRequest.getParameter("address")).thenReturn("address");
+		when(mockRequest.getParameter("location")).thenReturn("location");
+		when(mockRequest.getParameter("type")).thenReturn("onsite");
+		when(userRepo.findOne(anyInt())).thenReturn(new User());
+		when(mockRequest.getParameter("product-id")).thenReturn("1");
+		when(productRepo.findOne(anyInt())).thenReturn(new Product());
+		User user = new User();
+		user.ID = 1;
+		Store store = new Store();
+		store.id = 1;
+		store.owner = user;
+		store.products = new HashSet<Product>();
+		store.actions = new HashSet<Action>();
+		when(storeRepo.findOne(anyInt())).thenReturn(null);
+		
+		String result = this.ctrl.destroyProduct(mockRequest, mockHttpSession, mockModel, 1);
+		assertEquals("message", result);
+	}
 
 	@Test
 	public void testAddCollaborator() {
@@ -160,6 +370,32 @@ public class StoreTests {
 		when(storeRepo.findOne(anyInt())).thenReturn(store);
 		String result = this.ctrl.addCollaborator(mockRequest, mockHttpSession, mockModel, 1);
 		assertEquals("stores/addCollaborator", result);
+	}
+	
+	@Test
+	public void testInvalidAddCollaborator() {
+		when(mockHttpSession.getAttribute("user_id")).thenReturn(1);
+		when(mockHttpSession.getAttribute("user_type")).thenReturn("Normal User");
+		User user = new User();
+		user.ID = 2;
+		Store store = new Store();
+		store.owner = user;
+		when(storeRepo.findOne(anyInt())).thenReturn(store);
+		String result = this.ctrl.addCollaborator(mockRequest, mockHttpSession, mockModel, 1);
+		assertEquals("message", result);
+	}
+	
+	@Test
+	public void testEmptyAddCollaborator() {
+		when(mockHttpSession.getAttribute("user_id")).thenReturn(null);
+		when(mockHttpSession.getAttribute("user_type")).thenReturn("Store Owner");
+		User user = new User();
+		user.ID = 1;
+		Store store = new Store();
+		store.owner = user;
+		when(storeRepo.findOne(anyInt())).thenReturn(store);
+		String result = this.ctrl.addCollaborator(mockRequest, mockHttpSession, mockModel, 1);
+		assertEquals("message", result);
 	}
 	
 	@Test
@@ -178,6 +414,42 @@ public class StoreTests {
 		
 		String result = this.ctrl.storeCollaborator(mockRequest, mockHttpSession, mockModel, 1);
 		assertEquals("redirect:/stores/" + store.id + "/products", result);
+	}
+	
+	@Test
+	public void testInvalidStoreCollaborator() {
+		when(mockHttpSession.getAttribute("user_id")).thenReturn(2);
+		when(userRepo.findOne(anyInt())).thenReturn(new User());
+		when(mockRequest.getParameter("user-id")).thenReturn("1");
+		when(productRepo.findOne(anyInt())).thenReturn(new Product());
+		User user = new User();
+		user.ID = 1;
+		Store store = new Store();
+		store.id = 1;
+		store.owner = user;
+		store.collaborators = new HashSet<User>();
+		when(storeRepo.findOne(anyInt())).thenReturn(store);
+		
+		String result = this.ctrl.storeCollaborator(mockRequest, mockHttpSession, mockModel, 1);
+		assertEquals("message", result);
+	}
+	
+	@Test
+	public void testEmptyStoreCollaborator() {
+		when(mockHttpSession.getAttribute("user_id")).thenReturn(1);
+		when(userRepo.findOne(anyInt())).thenReturn(new User());
+		when(mockRequest.getParameter("user-id")).thenReturn("1");
+		when(productRepo.findOne(anyInt())).thenReturn(new Product());
+		User user = new User();
+		user.ID = 1;
+		Store store = new Store();
+		store.id = 1;
+		store.owner = user;
+		store.collaborators = new HashSet<User>();
+		when(storeRepo.findOne(anyInt())).thenReturn(null);
+		
+		String result = this.ctrl.storeCollaborator(mockRequest, mockHttpSession, mockModel, 1);
+		assertEquals("message", result);
 	}
 	
 }

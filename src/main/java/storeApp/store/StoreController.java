@@ -64,6 +64,12 @@ public class StoreController {
 		String address = request.getParameter("address");
 		String type = request.getParameter("type");
 		String location = request.getParameter("location");
+		
+		if (name.isEmpty() || address.isEmpty() || type.isEmpty() || location.isEmpty()) {
+			model.addAttribute("message", "All fields are required");
+			return "message";
+		}
+		
 		Store s = new Store(owner, name, address, type, location);
 		storeRepo.save(s);
 
@@ -97,8 +103,8 @@ public class StoreController {
 		
 		User moderator = store.owner;
 		
-		if(session.getAttribute("user_id") == null) {
-			model.addAttribute("message", "You must be logged in!");
+		if(session.getAttribute("user_id") == null || session.getAttribute("user_type") != "Store Owner") {
+			model.addAttribute("message", "You must be logged in as a store owner");
 			return "message";
 		} else if ((Integer) session.getAttribute("user_id") != store.owner.ID) {
 			// Check if user is a collaborator
@@ -145,8 +151,18 @@ public class StoreController {
 			}
 		}
 		
+		if (request.getParameter("product-id").isEmpty()) {
+			model.addAttribute("message", "No product ID specified");
+			return "message";
+		}
+		
 		// Store the product
 		Product product = productRepo.findOne(Integer.parseInt(request.getParameter("product-id")));
+		
+		if(store.products.contains(product)) {
+			
+		}
+		
 		store.products.add(product);
 		// Record the action
 		store.actions.add(new Action(moderator, store, product, "Product added"));
@@ -167,7 +183,7 @@ public class StoreController {
 		
 		User moderator = store.owner;
 		
-		if(session.getAttribute("user_id") == null) {
+		if(session.getAttribute("user_id") == null || session.getAttribute("user_type") != "Store Owner") {
 			model.addAttribute("message", "You must be logged in!");
 			return "message";
 		} else if ((Integer) session.getAttribute("user_id") != store.owner.ID) {
@@ -201,7 +217,7 @@ public class StoreController {
 		
 		User moderator = store.owner;
 		
-		if(session.getAttribute("user_id") == null) {
+		if(session.getAttribute("user_id") == null || session.getAttribute("user_type") != "Store Owner") {
 			model.addAttribute("message", "You must be logged in!");
 			return "message";
 		} else if ((Integer) session.getAttribute("user_id") != store.owner.ID) {
