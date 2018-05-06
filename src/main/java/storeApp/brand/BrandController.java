@@ -44,6 +44,17 @@ public class BrandController {
 		
 		String name = request.getParameter("name");
 		String category = request.getParameter("category");
+		
+		if (name.isEmpty() || category.isEmpty()) {
+			model.addAttribute("message", "All fields are required");
+			return "message";
+		}
+		
+		if (brandRepo.findByName(name) != null) {
+			model.addAttribute("message", "Brand already exists");
+			return "message";
+		}
+	
 		Brand b = new Brand(name , category);
 		brandRepo.save(b);
 
