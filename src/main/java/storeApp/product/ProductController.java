@@ -56,6 +56,12 @@ public class ProductController {
 		String productType = request.getParameter("productType");
 		String brandId = request.getParameter("brandId");
 		int id=Integer.parseInt(brandId);
+		
+		if (name.isEmpty() || price.isEmpty() || category.isEmpty() || productType.isEmpty() || brandId.isEmpty()) {
+			model.addAttribute("message", "All fields are required");
+			return "message";
+		}
+		
 		Product p = new Product(name, price1, category, productType, brandRepo.findOne(id));
 		productRepo.save(p);
 

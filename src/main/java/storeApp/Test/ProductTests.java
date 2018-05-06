@@ -46,6 +46,22 @@ public class ProductTests {
 	}
 	
 	@Test
+	public void testInvalidCreate() {
+		when(mockHttpSession.getAttribute("user_id")).thenReturn(1);
+		when(mockHttpSession.getAttribute("user_type")).thenReturn("Product Owner");
+		String result = this.ctrl.create(mockHttpSession, mockModel);
+		assertEquals("message", result);
+	}
+	
+	@Test
+	public void testEmptyCreate() {
+		when(mockHttpSession.getAttribute("user_id")).thenReturn(null);
+		when(mockHttpSession.getAttribute("user_type")).thenReturn("Admin");
+		String result = this.ctrl.create(mockHttpSession, mockModel);
+		assertEquals("message", result);
+	}
+	
+	@Test
 	public void testStore() {
 		when(mockHttpSession.getAttribute("user_id")).thenReturn(1);
 		when(mockHttpSession.getAttribute("user_type")).thenReturn("Admin");
@@ -60,6 +76,40 @@ public class ProductTests {
 		
 		String result = this.ctrl.store(mockRequest, mockHttpSession, mockModel);
 		assertEquals("redirect:/products", result);
+	}
+	
+	@Test
+	public void testInvalidStore() {
+		when(mockHttpSession.getAttribute("user_id")).thenReturn(1);
+		when(mockHttpSession.getAttribute("user_type")).thenReturn("Store Owner");
+		when(mockRequest.getParameter("name")).thenReturn("Product name");
+		when(mockRequest.getParameter("price")).thenReturn("90");
+		when(mockRequest.getParameter("category")).thenReturn("Product category");
+		when(mockRequest.getParameter("productType")).thenReturn("Product type");
+		when(mockRequest.getParameter("brandId")).thenReturn("1");
+		Brand brand = new Brand("Brand name", "Description");
+		brand.ID = 1;
+		when(brandRepo.findOne(anyInt())).thenReturn(brand);
+		
+		String result = this.ctrl.store(mockRequest, mockHttpSession, mockModel);
+		assertEquals("message", result);
+	}
+	
+	@Test
+	public void testEmptyStore() {
+		when(mockHttpSession.getAttribute("user_id")).thenReturn(1);
+		when(mockHttpSession.getAttribute("user_type")).thenReturn("Admin");
+		when(mockRequest.getParameter("name")).thenReturn("");
+		when(mockRequest.getParameter("price")).thenReturn("90");
+		when(mockRequest.getParameter("category")).thenReturn("Product category");
+		when(mockRequest.getParameter("productType")).thenReturn("Product type");
+		when(mockRequest.getParameter("brandId")).thenReturn("1");
+		Brand brand = new Brand("Brand name", "Description");
+		brand.ID = 1;
+		when(brandRepo.findOne(anyInt())).thenReturn(brand);
+		
+		String result = this.ctrl.store(mockRequest, mockHttpSession, mockModel);
+		assertEquals("message", result);
 	}
 
 }
