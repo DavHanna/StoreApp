@@ -41,13 +41,21 @@ public class OrderController {
 	@RequestMapping(value="/create/{storeId}/{productId}", method=RequestMethod.GET)
 	public String create(Model model, @PathVariable("storeId") int storeId, @PathVariable("productId") int productId) 
 	{
-		model.addAttribute("product", productRepo.findOne(productId));
-		model.addAttribute("store", storeRepo.findOne(storeId));
+		Store store = storeRepo.findOne(storeId);
+		Product product = productRepo.findOne(productId);
+		
+		if (store == null || product == null) {
+			model.addAttribute("message", "Store or product invalid");
+			return "message";
+		}
+		
+		model.addAttribute("product", product);
+		model.addAttribute("store", store);
 		return "orders/create";
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public String store(HttpServletRequest request)
+	public String store(HttpServletRequest request, Model model)
 	{
 		int productId = Integer.parseInt(request.getParameter("productId"));
 		int storeId = Integer.parseInt(request.getParameter("storeId"));
@@ -55,6 +63,11 @@ public class OrderController {
 		
 		Product product = productRepo.findOne(productId);
 		Store store = storeRepo.findOne(storeId);
+		
+		if (store == null || product == null) {
+			model.addAttribute("message", "Store or product invalid");
+			return "message";
+		}
 
 		Set<Product> products = new HashSet<Product>();
 		products.add(product);

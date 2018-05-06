@@ -44,10 +44,26 @@ public class OrderTests {
 
 	@Test
 	public void testCreate() {
-		when(productRepo.findOne(1)).thenReturn(null);
-		when(storeRepo.findOne(1)).thenReturn(null);
+		when(productRepo.findOne(anyInt())).thenReturn(new Product());
+		when(storeRepo.findOne(anyInt())).thenReturn(new Store());
 		String result = this.ctrl.create(mockModel, 1, 1);
 		assertEquals("orders/create", result);
+	}
+	
+	@Test
+	public void testInvalidCreate() {
+		when(productRepo.findOne(anyInt())).thenReturn(new Product());
+		when(storeRepo.findOne(anyInt())).thenReturn(null);
+		String result = this.ctrl.create(mockModel, 1, 1);
+		assertEquals("message", result);
+	}
+	
+	@Test
+	public void testEmptyCreate() {
+		when(productRepo.findOne(anyInt())).thenReturn(null);
+		when(storeRepo.findOne(anyInt())).thenReturn(null);
+		String result = this.ctrl.create(mockModel, 1, 1);
+		assertEquals("message", result);
 	}
 	
 	@Test
@@ -59,8 +75,34 @@ public class OrderTests {
 		when(storeRepo.findOne(anyInt())).thenReturn(new Store(new User(), "store name", "address", "onsite", "location"));
 		when(mockRequest.getParameter("category")).thenReturn("Category name");
 		
-		String result = this.ctrl.store(mockRequest);
+		String result = this.ctrl.store(mockRequest, mockModel);
 		assertEquals("redirect:/orders", result);
+	}
+	
+	@Test
+	public void testInvalidStore() {
+		when(mockRequest.getParameter("productId")).thenReturn("1");
+		when(mockRequest.getParameter("storeId")).thenReturn("1");
+		when(mockRequest.getParameter("quantity")).thenReturn("1");
+		when(productRepo.findOne(anyInt())).thenReturn(null);
+		when(storeRepo.findOne(anyInt())).thenReturn(new Store(new User(), "store name", "address", "onsite", "location"));
+		when(mockRequest.getParameter("category")).thenReturn("Category name");
+		
+		String result = this.ctrl.store(mockRequest, mockModel);
+		assertEquals("message", result);
+	}
+	
+	@Test
+	public void testEmptyStore() {
+		when(mockRequest.getParameter("productId")).thenReturn("1");
+		when(mockRequest.getParameter("storeId")).thenReturn("1");
+		when(mockRequest.getParameter("quantity")).thenReturn("1");
+		when(productRepo.findOne(anyInt())).thenReturn(new Product("product name", 10, "category", "onsite", new Brand("name", "description")));
+		when(storeRepo.findOne(anyInt())).thenReturn(null);
+		when(mockRequest.getParameter("category")).thenReturn("Category name");
+		
+		String result = this.ctrl.store(mockRequest, mockModel);
+		assertEquals("message", result);
 	}
 
 }
